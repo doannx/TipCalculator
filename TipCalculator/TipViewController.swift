@@ -112,7 +112,7 @@ class TipViewController: UIViewController {
     private func loadSavedData() {
         self.tipPercentIndex = self.tipUtil.selectedIndexWithTipPercent(NSUserDefaults.standardUserDefaults().savedTipPercent())
         self.updateTipButtons(self.tipPercentIndex)
-        self.updateBillAmountTextField()
+
     }
     
     private func updateBillAmountTextField() {
