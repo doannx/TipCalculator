@@ -19,9 +19,13 @@ class TipViewController: UIViewController {
     
     var tipPercentIndex = 0
     let tipUtil = TipUtils()
+    let formatter = NSNumberFormatter()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        formatter.minimumFractionDigits = 0
+        formatter.maximumFractionDigits = 2
+        
         // Do any additional setup after loading the view, typically from a nib.
         setupUI()
         
@@ -32,8 +36,6 @@ class TipViewController: UIViewController {
         self.loadSavedData()
         
         self.updateTip()
-        
-//        self.tfAmount.becomeFirstResponder()
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -49,6 +51,14 @@ class TipViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
 
+    private func doCheck() {
+        let lastOpen = NSUserDefaults.standardUserDefaults().savedLastOpened()
+        let current = NSDate().timeIntervalSince1970
+        if current - lastOpen > 5 {
+            NSUserDefaults.standardUserDefaults().saveBillAmount(0)
+        }
+    }
+    
     private func setupUI() {
         self.title = "Tip Calculator"
         
@@ -61,8 +71,6 @@ class TipViewController: UIViewController {
         self.updateTip()
     }
     
-    
-    
     @objc private func onSettingMenuClicked() {
         let settingVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("setting_vc")
         self.navigationController?.pushViewController(settingVC, animated: true)
@@ -70,7 +78,6 @@ class TipViewController: UIViewController {
     
     @IBAction private func onButtonClicked(button:UIButton) {
         self.tipPercentIndex = 0;
-        self.tfAmount.resignFirstResponder()
         
         let buttons = [self.btn10PercentTip, self.btn15PercentTip, self.btn20PercentTip];
         
@@ -90,8 +97,10 @@ class TipViewController: UIViewController {
         let tipAmount = self.tipUtil.tipAmount(billAmount:bill, tipPercent:tipPercent)
         let totalAmount = self.tipUtil.totalAmount(billAmount: bill, tipAmount: tipAmount)
         
-        lbTipAmount.text = "\(tipAmount)"
-        lbTotalAmount.text = "\(totalAmount)"
+        
+        
+        lbTipAmount.text = "\(formatter.stringFromNumber(tipAmount)!)"
+        lbTotalAmount.text = "\(formatter.stringFromNumber(totalAmount)!)"
     }
     
     @objc private func onTapOutside() {
@@ -103,6 +112,16 @@ class TipViewController: UIViewController {
     private func loadSavedData() {
         self.tipPercentIndex = self.tipUtil.selectedIndexWithTipPercent(NSUserDefaults.standardUserDefaults().savedTipPercent())
         self.updateTipButtons(self.tipPercentIndex)
+        self.updateBillAmountTextField()
+    }
+    
+    private func updateBillAmountTextField() {
+        let billAmount = NSUserDefaults.standardUserDefaults().savedBillAmount()
+        if billAmount != 0 {
+            self.tfAmount.text = "\(formatter.stringFromNumber(billAmount)!)"
+        } else {
+            self.tfAmount.text = ""
+        }
     }
     
     private func updateTipButtons(selectedIndex:Int) {

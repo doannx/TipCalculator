@@ -9,7 +9,7 @@
         <!--Tip View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="TipViewController" customModule="Tip_Calculator" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="TipViewController" customModule="TipCalculator" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
@@ -247,7 +247,7 @@
         <!--Settings View Controller-->
         <scene sceneID="Tw5-HJ-7IF">
             <objects>
-                <viewController storyboardIdentifier="setting_vc" id="cEY-na-XDi" customClass="SettingsViewController" customModule="Tip_Calculator" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="setting_vc" id="cEY-na-XDi" customClass="SettingsViewController" customModule="TipCalculator" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="dny-rR-RJr"/>
                         <viewControllerLayoutGuide type="bottom" id="XhC-CY-3Wb"/>
