@@ -145,13 +145,39 @@ class TipViewController: UIViewController {
 extension TipViewController:UITextFieldDelegate {
     func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
         
-        let currentCharacterCount = textField.text?.characters.count ?? 0
+        guard let text = textField.text else { return false }
         
-        if (range.length + range.location > currentCharacterCount){
+        let updatedText = (text as NSString).stringByReplacingCharactersInRange(range, withString: string)
+        
+        // Empty this textfield
+        if updatedText.characters.count == 0 {
+            return true
+        }
+        
+        if !isValidDouble(updatedText) {
+            return false;
+        }
+        
+        return isValidLength(updatedText)
+    }
+    
+    func isValidDouble(text:String) -> Bool {
+        if let _ = text.doubleValue {
+            return true
+        } else {
             return false
         }
-        let newLength = currentCharacterCount + string.characters.count - range.length
-        return newLength <= 8
+    }
+    
+    func isValidLength(text:String) -> Bool {
+        return text.characters.count >= 0 && text.characters.count <= 8
+    }
+}
+
+extension String {
+    // I know this check is really stupid.
+    var doubleValue:Double? {
+        return NSNumberFormatter().numberFromString(self)?.doubleValue
     }
 }
 
